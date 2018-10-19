@@ -61,12 +61,19 @@ void InsertPolynomial(Polynomial *&L, Polynomial *&x) {
 
 void PrintPolynomial(Polynomial *L) {
     Polynomial *p = L->next;
+    if (p == NULL) {
+        puts("0");
+        return;
+    }
     while (p != NULL) {
         if (p != L->next && p->coefficient > 0) printf("+");
         if (p->coefficient != 0) {
             if (p->coefficient != 1 && p->coefficient != -1) printf("%g", p->coefficient);
             if (p->coefficient == -1) printf("-");
-            printf("x^%g", p->index);
+            if (p->index != 0) 
+                if (p->index != 1) printf("x^%g", p->index);
+                else printf("x");
+            else if (p->coefficient == 1 || p->coefficient == -1) printf("1");
         }   
         p = p->next;
     }
@@ -82,26 +89,44 @@ void ReadPolynomial(Polynomial *&L) {
     Polynomial *p;
     scanf("%s", poly);
     for (int i = 0; poly[i]!='\0';) {
-        int c = 0, x = 0, f = 1;
-        p = (Polynomial *)malloc(sizeof(Polynomial));
+        double c = 0, x = 0, f = 1, d = 1;
         if (poly[i]== '-') i++, f=-1;
+        if (poly[i]== '+') i++, f=1;
         if (poly[i] >= '0' && poly[i] <= '9') {
             while (poly[i] >= '0' && poly[i] <= '9') {
                 c *= 10;
                 c += poly[i] - '0';
                 i++;
             }
+            if (poly[i] == '.') {
+                i++;
+                while (poly[i] >= '0' && poly[i] <= '9') {
+                    d /= 10;
+                    c += d * (poly[i] - '0');
+                    i++;
+                }
+            }
         }
         else c = 1;
-        while (poly[i] < '0' || poly[i] > '9') i++;
-        while (poly[i] >= '0' && poly[i] <= '9') {
-            x *= 10;
-            x += poly[i] - '0';
+        if (poly[i] == 'x') {
             i++;
+            if (poly[i]=='^') {
+                i++;
+                while (poly[i] >= '0' && poly[i] <= '9') {
+                    x *= 10;
+                    x += poly[i] - '0';
+                    i++;
+                }
+            }
+            else x = 1;
         }
-        p->coefficient = c * f;
-        p->index = x;
-        InsertPolynomial(L, p);
+        else x = 0;
+        if (c != 0) {
+            InitPolynomial(p);
+            p->coefficient = c * f;
+            p->index = x;
+            InsertPolynomial(L, p);
+        }
     }
 }
 
@@ -127,14 +152,16 @@ void AddPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
             r = r->next;
         }
         else if (p->index == q -> index) {
-            InitPolynomial(s);
-            s->coefficient = p->coefficient + q->coefficient;
-            s->index = q->index;
-            s->next = r->next;
-            r->next = s;
+            if (p->coefficient + q->coefficient != 0) {
+                InitPolynomial(s);
+                s->coefficient = p->coefficient + q->coefficient;
+                s->index = q->index;
+                s->next = r->next;
+                r->next = s;
+                r = r->next;
+            }
             p = p->next;
             q = q->next;
-            r = r->next;
         }
     }
     while (p!=NULL) {
@@ -179,14 +206,16 @@ void SubPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
             r = r->next;
         }
         else if (p->index == q -> index) {
-            InitPolynomial(s);
-            s->coefficient = p->coefficient - q->coefficient;
-            s->index = q->index;
-            s->next = r->next;
-            r->next = s;
+            if (p->coefficient - q->coefficient != 0) {
+                InitPolynomial(s);
+                s->coefficient = p->coefficient - q->coefficient;
+                s->index = q->index;
+                s->next = r->next;
+                r->next = s;
+                r = r->next;
+            }
             p = p->next;
             q = q->next;
-            r = r->next;
         }
     }
     while (p!=NULL) {
@@ -216,8 +245,7 @@ void MulPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
         while (q!=NULL) {
             InitPolynomial(s);
             s->coefficient = p->coefficient * q->coefficient;
-            s->index = p->index * q->index;
-            printf("%g %g\n",s->coefficient,s->index);
+            s->index = p->index + q->index;
             InsertPolynomial(C, s);
             q = q->next;
         }
@@ -241,6 +269,7 @@ void init() {
     if (x == 1) AddPolynomial(polyA, polyB, polyC);
     else if (x == 2) SubPolynomial(polyA, polyB, polyC);
     else if (x == 3) MulPolynomial(polyA, polyB, polyC);
+    printf("Result:\n");
     PrintPolynomial(polyC);
     DestoryPolynomial(polyA);
     DestoryPolynomial(polyB);

@@ -10,15 +10,15 @@ typedef struct Poly {
 }Polynomial;
 
 void init();
-void InitPolynomial(Polynomial*&);
-void ReadPolynomial(Polynomial*&);
-void PrintPolynomial(Polynomial*);
-bool PolynomialEmpty(Polynomial*&);
-void DestoryPolynomial(Polynomial*&);
-void InsertPolynomial(Polynomial*&, Polynomial*&);
-void AddPolynomial(Polynomial*&, Polynomial*&, Polynomial*&);
-void SubPolynomial(Polynomial*&, Polynomial*&, Polynomial*&);
-void MulPolynomial(Polynomial*&, Polynomial*&, Polynomial*&);
+void initPolynomial(Polynomial*&);
+void readPolynomial(Polynomial*&);
+void printPolynomial(Polynomial*);
+bool polynomialEmpty(Polynomial*&);
+void destoryPolynomial(Polynomial*&);
+void insertPolynomial(Polynomial*&, Polynomial*&);
+void addPolynomial(Polynomial*&, Polynomial*&, Polynomial*&);
+void subPolynomial(Polynomial*&, Polynomial*&, Polynomial*&);
+void mulPolynomial(Polynomial*&, Polynomial*&, Polynomial*&);
 
 Polynomial *polyA, *polyB, *polyC;
 
@@ -28,13 +28,13 @@ int main() {
     return 0;
 }
 
-void InitPolynomial(Polynomial *&L) {
+void initPolynomial(Polynomial *&L) {
     L = (Polynomial *)malloc(sizeof(Polynomial));
     L->next = NULL;
     L->coefficient = L->index = 0;
 }
 
-void DestoryPolynomial(Polynomial *&L) {
+void destoryPolynomial(Polynomial *&L) {
     Polynomial *pre = L, *p = L->next;
     while (p != NULL) {
         free(pre);
@@ -44,7 +44,7 @@ void DestoryPolynomial(Polynomial *&L) {
     free(pre);
 }
 
-void InsertPolynomial(Polynomial *&L, Polynomial *&x) {
+void insertPolynomial(Polynomial *&L, Polynomial *&x) {
     Polynomial *p = L;
     while (p->next != NULL && p->next->index >= x->index)
         p = p->next;
@@ -59,7 +59,7 @@ void InsertPolynomial(Polynomial *&L, Polynomial *&x) {
     }
 }
 
-void PrintPolynomial(Polynomial *L) {
+void printPolynomial(Polynomial *L) {
     Polynomial *p = L->next;
     if (p == NULL) {
         puts("0");
@@ -80,11 +80,11 @@ void PrintPolynomial(Polynomial *L) {
     puts("");
 }
 
-bool PolynomialEmpt(Polynomial *&L) {
+bool polynomialEmpt(Polynomial *&L) {
     return (L->next == NULL);
 }
 
-void ReadPolynomial(Polynomial *&L) {
+void readPolynomial(Polynomial *&L) {
     char poly[MaxLenth]={'\0'};
     Polynomial *p;
     scanf("%s", poly);
@@ -122,19 +122,19 @@ void ReadPolynomial(Polynomial *&L) {
         }
         else x = 0;
         if (c != 0) {
-            InitPolynomial(p);
+            initPolynomial(p);
             p->coefficient = c * f;
             p->index = x;
-            InsertPolynomial(L, p);
+            insertPolynomial(L, p);
         }
     }
 }
 
-void AddPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
+void addPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
     Polynomial *p = A->next, *q = B->next, *r = C, *s;
     while (p != NULL && q != NULL) {
         if (p->index > q -> index) {
-            InitPolynomial(s);
+            initPolynomial(s);
             s->coefficient = p->coefficient;
             s->index = p->index;
             s->next = r->next;
@@ -143,7 +143,7 @@ void AddPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
             r = r->next;
         }
         else if (p->index < q -> index) {
-            InitPolynomial(s);
+            initPolynomial(s);
             s->coefficient = q->coefficient;
             s->index = q->index;
             s->next = r->next;
@@ -153,7 +153,7 @@ void AddPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
         }
         else if (p->index == q -> index) {
             if (p->coefficient + q->coefficient != 0) {
-                InitPolynomial(s);
+                initPolynomial(s);
                 s->coefficient = p->coefficient + q->coefficient;
                 s->index = q->index;
                 s->next = r->next;
@@ -165,7 +165,7 @@ void AddPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
         }
     }
     while (p!=NULL) {
-        InitPolynomial(s);
+        initPolynomial(s);
         s->coefficient = p->coefficient;
         s->index = p->index;
         s->next = r->next;
@@ -174,7 +174,7 @@ void AddPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
         r = r->next;
     }
     while (q!=NULL) {
-        InitPolynomial(s);
+        initPolynomial(s);
         s->coefficient = q->coefficient;
         s->index = q->index;
         s->next = r->next;
@@ -184,11 +184,11 @@ void AddPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
     }
 }
 
-void SubPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
+void subPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
     Polynomial *p = A->next, *q = B->next, *r = C, *s;
     while (p != NULL && q != NULL) {
         if (p->index > q -> index) {
-            InitPolynomial(s);
+            initPolynomial(s);
             s->coefficient = p->coefficient;
             s->index = p->index;
             s->next = r->next;
@@ -197,7 +197,7 @@ void SubPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
             r = r->next;
         }
         else if (p->index < q -> index) {
-            InitPolynomial(s);
+            initPolynomial(s);
             s->coefficient = -q->coefficient;
             s->index = q->index;
             s->next = r->next;
@@ -207,7 +207,7 @@ void SubPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
         }
         else if (p->index == q -> index) {
             if (p->coefficient - q->coefficient != 0) {
-                InitPolynomial(s);
+                initPolynomial(s);
                 s->coefficient = p->coefficient - q->coefficient;
                 s->index = q->index;
                 s->next = r->next;
@@ -219,7 +219,7 @@ void SubPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
         }
     }
     while (p!=NULL) {
-        InitPolynomial(s);
+        initPolynomial(s);
         s->coefficient = p->coefficient;
         s->index = p->index;
         s->next = r->next;
@@ -228,7 +228,7 @@ void SubPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
         r = r->next;
     }
     while (q!=NULL) {
-        InitPolynomial(s);
+        initPolynomial(s);
         s->coefficient = q->coefficient;
         s->index = q->index;
         s->next = r->next;
@@ -238,15 +238,15 @@ void SubPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
     }
 }
 
-void MulPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
+void mulPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
     Polynomial *p = A->next, *q = B->next, *r = C, *s;
     while (p!=NULL) {
         q = B->next;
         while (q!=NULL) {
-            InitPolynomial(s);
+            initPolynomial(s);
             s->coefficient = p->coefficient * q->coefficient;
             s->index = p->index + q->index;
-            InsertPolynomial(C, s);
+            insertPolynomial(C, s);
             q = q->next;
         }
         p = p->next;
@@ -254,24 +254,24 @@ void MulPolynomial(Polynomial *&A, Polynomial *&B, Polynomial *&C) {
 }
 
 void init() {
-    InitPolynomial(polyA);
-    InitPolynomial(polyB);
-    InitPolynomial(polyC);
+    initPolynomial(polyA);
+    initPolynomial(polyB);
+    initPolynomial(polyC);
     printf("Please enter the first polynomial:\n");
-    ReadPolynomial(polyA);
-    //PrintPolynomial(polyA);
+    readPolynomial(polyA);
+    //printPolynomial(polyA);
     printf("Please enter the second polynomial:\n");
-    ReadPolynomial(polyB);
-    //PrintPolynomial(polyB);
+    readPolynomial(polyB);
+    //printPolynomial(polyB);
     printf("Please select a polynomial operation(1.Add;2.Subtract;3.Multiply):\n");
     int x;
     scanf("%d", &x);
-    if (x == 1) AddPolynomial(polyA, polyB, polyC);
-    else if (x == 2) SubPolynomial(polyA, polyB, polyC);
-    else if (x == 3) MulPolynomial(polyA, polyB, polyC);
+    if (x == 1) addPolynomial(polyA, polyB, polyC);
+    else if (x == 2) subPolynomial(polyA, polyB, polyC);
+    else if (x == 3) mulPolynomial(polyA, polyB, polyC);
     printf("Result:\n");
-    PrintPolynomial(polyC);
-    DestoryPolynomial(polyA);
-    DestoryPolynomial(polyB);
-    DestoryPolynomial(polyC);
+    printPolynomial(polyC);
+    destoryPolynomial(polyA);
+    destoryPolynomial(polyB);
+    destoryPolynomial(polyC);
 }

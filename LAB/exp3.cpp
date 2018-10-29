@@ -17,10 +17,7 @@ void work();
 bool pop(Stack*&);
 void print(Stack*&);
 int getTop(Stack*&);
-int getLenth(Stack*&);
-bool detect(int, int);
-void prepare(int, int);
-void recover(int, int);
+int getLenth(Stack*&);  
 bool push(Stack*&, int);
 void initStack(Stack*&);
 bool stackEmpty(Stack*&);
@@ -57,20 +54,9 @@ void work() {
                 break;
             }
     }
-    printf("Total: %d\n", ans);
+       printf("Total: %d\n", ans);
 }
 
-void print(Stack *&s) {
-    for (int i = 0; i <= s->top; i++) {
-        for (int j = 1; j <= n; j++)
-            if (j != s->data[i])
-                printf(" .");
-            else
-                printf(" x");
-        puts("");
-    }
-    puts("");
-}
 
 void init() {
     scanf("%d", &n);
@@ -78,24 +64,6 @@ void init() {
 
 int getLenth(Stack *&s) {
     return s->top + 1;
-}
-
-void prepare(int x, int y) {
-    col[y] = 1;
-    leftDia[y - x + n] = 1;
-    rightDia[(n << 1) - y - x + 1] = 1;
-}
-
-void recover(int x, int y) {
-    col[y] = 0;
-    leftDia[y - x + n] = 0;
-    rightDia[(n << 1) - y - x + 1] = 0;
-}
-
-bool detect(int x, int y) {
-    if (col[y] == 0 && leftDia[y - x + n] == 0 && rightDia[(n << 1) - y - x + 1] == 0)
-        return true;
-    return false;
 }
 
 void initStack(Stack *&s) {

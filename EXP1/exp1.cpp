@@ -9,16 +9,15 @@ typedef struct Poly {
     struct Poly * next;
 }Polynomial;
 
-void init();
-void initPolynomial(Polynomial*&);
-void readPolynomial(Polynomial*&);
-void printPolynomial(Polynomial*);
-bool polynomialEmpty(Polynomial*&);
-void destoryPolynomial(Polynomial*&);
-void insertPolynomial(Polynomial*&, Polynomial*&);
-void addPolynomial(Polynomial*&, Polynomial*&, Polynomial*&);
-void subPolynomial(Polynomial*&, Polynomial*&, Polynomial*&);
-void mulPolynomial(Polynomial*&, Polynomial*&, Polynomial*&);
+void init();                                                        //读入数据，控制进程
+void initPolynomial(Polynomial*&);                                  //初始化多项式单链表
+void readPolynomial(Polynomial*&);                                  //读取多项式，进行字符串处理
+void printPolynomial(Polynomial*);                                  //打印多项式
+void destoryPolynomial(Polynomial*&);                               //销毁多项式单链表
+void insertPolynomial(Polynomial*&, Polynomial*&);                  //插入单式至多项式的正确位置
+void addPolynomial(Polynomial*&, Polynomial*&, Polynomial*&);       //多项式加法，由第三个参数返回结果
+void subPolynomial(Polynomial*&, Polynomial*&, Polynomial*&);       //多项式减法，由第三个参数返回结果
+void mulPolynomial(Polynomial*&, Polynomial*&, Polynomial*&);       //多项式乘法，由第三个参数返回结果
 
 Polynomial *polyA, *polyB, *polyC;
 
@@ -78,10 +77,6 @@ void printPolynomial(Polynomial *L) {
         p = p->next;
     }
     puts("");
-}
-
-bool polynomialEmpt(Polynomial *&L) {
-    return (L->next == NULL);
 }
 
 void readPolynomial(Polynomial *&L) {

@@ -10,21 +10,21 @@ typedef struct {
 }Stack;
 
 int n, ans = 0;
-int row[MaxSize] = {0}, col[MaxSize] = {0}, leftDia[MaxSize] = {0}, rightDia[MaxSize] = {0};
+int row[MaxSize] = {0}, col[MaxSize] = {0}, leftDia[2*MaxSize] = {0}, rightDia[2*MaxSize] = {0};
 
-void init();
-void work();
-bool pop(Stack*&);
-void print(Stack*&);
-int getTop(Stack*&);
-int getLenth(Stack*&);
-bool detect(int, int);
-void prepare(int, int);
-void recover(int, int);
-bool push(Stack*&, int);
-void initStack(Stack*&);
-bool stackEmpty(Stack*&);
-void destoryStack(Stack*&);
+void init();                                //输入皇后个数n
+void work();                                //N皇后求解算法实现
+bool pop(Stack*&);                          //弹出栈顶元素
+void print(Stack*&);                        //根据栈打印当前解
+int getTop(Stack*&);                        //获取栈顶元素
+int getLenth(Stack*&);                      //获取栈长度
+bool detect(int, int);                      //前一个参数为行，后一参数为列，检测当前位置是否可以放皇后
+void prepare(int, int);                     //前一个参数为行，后一参数为列，在当前位置放皇后
+void recover(int, int);                     //前一个参数为行，后一参数为列，移除当前位置皇后
+bool push(Stack*&, int);                    //入栈
+void initStack(Stack*&);                    //新建栈并初始化
+bool stackEmpty(Stack*&);                   //判断栈是否为空，为空返回1，不为空返回0
+void destroyStack(Stack*&);                 //销毁栈
 
 int main() {
     init();
@@ -57,6 +57,7 @@ void work() {
                 break;
             }
     }
+    destroyStack(s);
     printf("Total: %d\n", ans);
 }
 
@@ -107,7 +108,7 @@ bool stackEmpty(Stack *&s) {
     return (s->top > -1);
 }
 
-void destoryStack(Stack *&s) {
+void destroyStack(Stack *&s) {
     free(s);
 }
 

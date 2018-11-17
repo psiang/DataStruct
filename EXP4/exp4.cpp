@@ -9,7 +9,8 @@
 using namespace std;
 
 #define PI acos(-1)
-#define MAXLEN 10001 
+#define MAXSTACK 101 
+#define MAXLEN 40001 
 #define max(a, b) ((a) > (b) ? (a) : (b))
 #define min(a, b) ((a) < (b) ? (a) : (b))
 
@@ -32,14 +33,14 @@ class Bium {
 		void division(Bium&, Bium&, Bium&);			        //Store the second divides the third in the first, and left the remainder in the second
 		void subtraction(Bium&, Bium&, Bium&); 		        //Store the second minus the third in the first, after two have the same sg
 		void fft(complex<double>*, int*, int, int);         //Fast Fourier transform
-
+		
 		bool operator > (const Bium&);						//Compare if former is bigger than later
 		bool operator < (const Bium&);						//Compare if former is smaller than later
 		bool operator >= (const Bium&);						//Compare if former is not smaller than later
 		bool operator <= (const Bium&);						//Compare if former is not bigger than later
 		bool operator == (const Bium&);						//Compare if former and later are the same
-		bool operator != (const Bium&);						//Compare if former and later are not the same 
-		
+		bool operator != (const Bium&);						//Compare if former and later are not the same
+
 		Bium operator + (Bium&);				            //Reload + 
 		Bium operator - (Bium&);				            //Reload -
 		Bium operator * (Bium&);				            //Reload * 
@@ -47,11 +48,24 @@ class Bium {
 		Bium operator % (Bium&);				            //Reload %
 
 		Bium factorial();				                    //Caculate factorial
+		Bium power(int&);				                    //Calculate the nth power, n is the parameter
 		Bium power(Bium&);				                    //Calculate the nth power, n is the parameter
+		Bium power(char*&);				                    //Calculate the nth power, n is the parameter
 		
 		Bium& operator = (const int&);						//Reload = for int
 		Bium& operator = (const Bium&);						//Reload = for Bium
 		Bium& operator = (const char*&);					//Reload = for string
+
+		Bium& operator += (Bium&);							//Reload +=
+		Bium& operator -= (Bium&);							//Reload -=
+		Bium& operator *= (Bium&);							//Reload *=
+		Bium& operator /= (Bium&);							//Reload /=
+		Bium& operator %= (Bium&);							//Reload %=
+
+		Bium& operator ++ ();								//Reload pre ++
+		Bium& operator -- ();								//Reload pre --
+		Bium operator ++ (int);								//Reload post ++
+		Bium operator -- (int);								//Reload post --
 		
 		read ();											//Read the Bium
 		clear ();											//Clear the Bium
@@ -60,18 +74,18 @@ class Bium {
 		zerocheck();										//Remove the zero in the front of the Bium
 };
 
-char stack1[MAXLEN];
-Bium stack2[MAXLEN];
+char stack1[MAXSTACK];
+Bium stack2[MAXSTACK];
 int top1 = 0, top2 = 0;
-char expression[MAXLEN*MAXLEN] = {'\0'};
+char expression[MAXLEN] = {'\0'};
 		
-int priority(char);											//Compare the priority of operator
+int priority(char);		 									//Compare the priority of operator
 void transform(char*);										//Get the value of the expression 
 void evaluation_expression();								//Read a expression and Get the value of the expression 
-Bium calculate(Bium, Bium, char);							//Do calculate
+Bium calculate(Bium&, Bium&, char);							//Do calculate
 
 int main() {
-	evaluation_expression(); 
+	evaluation_expression();
     system("pause");
 	return 0;
 }
@@ -117,8 +131,7 @@ Bium::zerocheck () {
 	}
 }
 
-int Bium::bigger(const Bium& a,const Bium& b)
-{
+int Bium::bigger(const Bium& a,const Bium& b){
 	if (a.sg * b.sg < 0) 
 		return a.sg > b.sg;
 	else 
@@ -145,8 +158,7 @@ int Bium::bigger(const Bium& a,const Bium& b)
 	}
 }
 
-void Bium::swap(Bium& a, Bium& b)
-{
+void Bium::swap(Bium& a, Bium& b){
 	Bium c;
 	c = a; a = b; b = c;
 }
@@ -211,9 +223,8 @@ void Bium::multiply(Bium& c, Bium& a, Bium& b) {
     c.sg = a.sg * b.sg;
     int up = 0;
     for(int i = 0; i < c.len; i++) {
-        c.num[i] = int(f1[i].real() + 0.5) + up;
-		up = c.num[i] / 10;                                 //Carry for the number
-		c.num[i] %= 10; 
+        c.num[i] = int(f1[i].real() + 0.5 + up) % 10;
+		up = int(f1[i].real() + 0.5 + up) / 10;             //Carry for the number 
     }
 	while (up) {
 		c.num[c.len++] = up % 10;
@@ -248,35 +259,32 @@ void Bium::division(Bium& c, Bium& a, Bium& t) {
 }
 
 Bium Bium::factorial() {
-	Bium a, one, c;
+	Bium a, c, one(1);
 	c.clear();
 	a = *this;
 	c = 1;
-	one = 1;
 	while (a != 0) {
-		c = c * a;
-		a = a - one;
+		c *= a;
+		-- a;
 	}
     return c;
 }
 
 Bium Bium::power(Bium& t) {
-	Bium a, b, c;
-	Bium two(2);
+	Bium a, b, c, two(2);
 	c.clear();
 	a = *this;
 	b = t;
 	c = 1;
 	while (b > 0) {
-		if (b % two == 1) c = c * a;
-		a = a * a;
-		b = b / two;
+		if (b % two == 1) c *= a;
+		a *= a;
+		b /= two;
 	}
     return c;
 }
 
-void Bium::fft(complex<double>* f, int* pos, int len, int on)
-{
+void Bium::fft(complex<double>* f, int* pos, int len, int on) {
     complex<double> temp;
     for(int i = 0; i < len; i++)
         if(i < pos[i]) {
@@ -305,7 +313,6 @@ void Bium::fft(complex<double>* f, int* pos, int len, int on)
             f[i] /= len;
     }
 }
-
 
 bool Bium::operator > (const Bium& s) {
 	int temp = bigger(*this, s);
@@ -342,7 +349,7 @@ bool Bium::operator != (const Bium& s) {
 	if (temp == 2) return 0;
 	else return 1;
 }
-		
+
 Bium& Bium::operator = (const Bium& s) {
 	this->clear();
 	this->sg = s.sg;
@@ -445,6 +452,55 @@ Bium Bium::operator % (Bium& b) {
 	return d;
 }
 
+Bium& Bium::operator += (Bium& b) {
+	*this = *this + b;
+	return *this;
+}	
+
+Bium& Bium::operator -= (Bium& b) {
+	*this = *this - b;
+	return *this;
+}	
+
+Bium& Bium::operator *= (Bium& b) {
+	*this = *this * b;
+	return *this;
+}
+
+Bium& Bium::operator /= (Bium& b) {
+	*this = *this / b;
+	return *this;
+}
+
+Bium& Bium::operator %= (Bium& b) {
+	*this = *this % b;
+	return *this;
+}
+
+Bium& Bium::operator ++ () {
+	Bium one(1);
+	*this += one;
+	return *this;
+}
+
+Bium Bium::operator ++ (int) {
+	Bium temp = *this, one(1);
+	*this += one;
+	return temp;
+}
+
+Bium& Bium::operator -- () {
+	Bium one(1);
+	*this -= one;
+	return *this;
+}
+
+Bium Bium::operator -- (int) {
+	Bium temp = *this, one(1);
+	*this -= one;
+	return temp;
+}
+
 void evaluation_expression(){
 	gets(expression);
 	transform(expression);									
@@ -499,7 +555,7 @@ void transform(char* ch) {
 	stack2[top2 - 1].printL();
 }
 
-Bium calculate(Bium a, Bium b, char o) {
+Bium calculate(Bium& a, Bium& b, char o) {
 	Bium c;
 	switch (o) {
 		case '+': {c = a + b; break;}

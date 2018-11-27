@@ -48,9 +48,7 @@ class Bium {
 		Bium operator % (Bium&);				            //Reload %
 
 		Bium factorial();				                    //Caculate factorial
-		Bium power(int&);				                    //Calculate the nth power, n is the parameter
 		Bium power(Bium&);				                    //Calculate the nth power, n is the parameter
-		Bium power(char*&);				                    //Calculate the nth power, n is the parameter
 		
 		Bium& operator = (const int&);						//Reload = for int
 		Bium& operator = (const Bium&);						//Reload = for Bium
@@ -169,7 +167,7 @@ void Bium::addtion(Bium& c, Bium& a, Bium& b) {
 	c.len = max(a.len, b.len);
     int up = 0;
 	for (int i = 0; i < c.len; i++) {
-        c.num[i] = (i >= a.len? 0: a.num[i]) + (i >= b.len? 0: b.num[i]);
+        c.num[i] = (i >= a.len? 0: a.num[i]) + (i >= b.len? 0: b.num[i]) + up;
         up = c.num[i] / 10;
         c.num[i] %= 10;
     }

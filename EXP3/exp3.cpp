@@ -49,6 +49,24 @@ int main() {
     return 0;
 }
 
+complex<double>* fft(int* f, bool inverse) {
+    n = strlen(f);
+    if (n == 1) return f[0];
+    int* f1[n/2],f2[n/2];
+    complex<double>* y[n];
+    for (int i = 0; i < n; i+=2)                    //调整递归系数
+        f1.append(f[i]),f2.append(f[i+1]);
+    y1 = fft(fx1, inverse), y2 = fft(fx2, inverse);                   //递归
+    w = 1;
+    wn = complex(cos(2*PI/n),sin(2*PI/n));  //本原根
+    for (int i = 0; i < n/2; i++) {
+        y[i] = (y1[i%(n/2)] + w * y2[i%(n/2)]);     //递归的还原
+        y[i + (n/2)] = (y1[i%(n/2)] - w * y2[i%(n/2)]);    
+        w = w*wn;   //构造复数的单位根
+    }
+    return y;
+}
+
 void work() {
     Queue *queue;
     Stack *stack, *temp;
@@ -82,7 +100,7 @@ void work() {
                 }
                 long long outTime = time(NULL);
                 Car now = getTop(stack);
-                printf("For a total of %ld seconds, you should pay %.2lf yuan\n", outTime - now.inTime, CostPerSecond * (outTime - now.inTime));
+                printf("For a total of %ld seconds, ou should pay %.2lf yuan\n", outTime - now.inTime, CostPerSecond * (outTime - now.inTime));
                 pop(stack);
                 while (!stackEmpty(temp)) {
                     push(stack, getTop(temp));

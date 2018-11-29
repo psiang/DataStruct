@@ -283,21 +283,19 @@ Bium Bium::power(Bium& t) {
 }
 
 void Bium::fft(complex<double>* f, int* pos, int len, int on) {
+	//f is a sequence of point values, pos is the position of the bit reverse order, len is the length of the sequence, and on is judged as DFT or IDFT
     complex<double> temp;
-    for(int i = 0; i < len; i++)
+    for(int i = 0; i < len; i++)	//Bit reverse order replacement
         if(i < pos[i]) {
             temp = f[i];
             f[i] = f[pos[i]];
             f[pos[i]] = temp;
         }
-    for(int i = 1; i < len; i <<= 1)
-    {
+    for(int i = 1; i < len; i <<= 1) {
         complex<double> wn(cos(on * PI / i), sin(on * PI / i));
-        for(int j = 0; j < len; j += (i << 1))
-        {
+        for(int j = 0; j < len; j += (i << 1)) {
             complex<double> wi(1, 0);
-            for(int k = j; k < j + i; k++)
-            {
+            for(int k = j; k < j + i; k++) {
                 complex<double> u = f[k], v = f[k + i] * wi;
                 f[k] = u + v;
                 f[k + i] = u - v;
@@ -305,8 +303,7 @@ void Bium::fft(complex<double>* f, int* pos, int len, int on) {
             }
         }
     }
-    if(on == -1)
-    {
+    if(on == -1) {
         for(int i = 0; i < len; i++)
             f[i] /= len;
     }

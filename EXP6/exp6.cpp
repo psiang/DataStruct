@@ -84,18 +84,13 @@ Matrix multiply(Matrix a, Matrix b) {
     findStart(Brstart, b);
     for (int i = 0; i < a.rows; i++) {
         int t, temp[b.cols] = {0};
-        if (i < a.rows - 1)
-            ta = Arstart[i + 1];
-        else
-            ta = a.nums;
+        if (i < a.rows - 1) ta = Arstart[i + 1];
+        else ta = a.nums;
         for (int j = Arstart[i]; j < ta; j++) {
-            if (c(a, j) < b.rows - 1)
-                tb = Brstart[c(a, j) + 1];
-            else
-                tb = b.nums;
-            for (int k = Brstart[c(a, j)]; k < tb; k++) {
+            if (c(a, j) < b.rows - 1) tb = Brstart[c(a, j) + 1];
+            else tb = b.nums;
+            for (int k = Brstart[c(a, j)]; k < tb; k++)
                 temp[c(b, k)] += d(a, j) * d(b, k);
-            }
         }
         for (int col = 0; col < b.cols; col++)
             if (temp[col])

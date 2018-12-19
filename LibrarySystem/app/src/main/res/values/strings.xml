@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bai Ze Book House</string>
+    <string name="hello_world">2B Sister</string>
+    <string name="sent">Sent</string>
+    <string name="deleteMessage">DeleteAll</string>
+    <string name="inputEmpty">Input can not be NULL</string>
+    <string name="showOnlineNumber">Show Online Number</string>
+    <string name="loginTitle">Bai Ze Book House</string>
+    <string name="queryBookTitle">Book inquiry</string>
+    <string name="loginBotton">Login</string>
+    <string name="register">Register</string>
+    <string name="queryButton">Search</string>
+    <string name="passwordError">Error Password</string>
+    <string name="passwordConfirmError">Inconsistent Passwords</string>
+    <string name="usernameHint">Please input your username.</string>
+    <string name="passwordHint">Please input your password.</string>
+    <string name="usernameHintRegister">Please set your username.</string>
+    <string name="passwordHintRegister">Please set your password.</string>
+    <string name="passwordHintConfirm">Please confirm your password.</string>
+    <string name="searchHint">title/author/book ID.</string>
+    <string name="controlBook">Manage Books</string>
+    <string name="insertBook">Add Books</string>
+    <string name="queryBook">Query Books</string>
+    <string name="queryStudent">Query Students</string>
+    <string name="myBook">My Books</string>
+    <string name="chatRoom">Chat Room</string>
+</resources>

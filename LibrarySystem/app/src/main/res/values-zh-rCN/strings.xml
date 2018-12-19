@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">白泽书房</string>
+    <string name="hello_world">二B小姐姐</string>
+    <string name="sent">发送</string>
+    <string name="deleteMessage">删除全部</string>
+    <string name="showOnlineNumber">在线人数</string>
+    <string name="inputEmpty">输入不能为空</string>
+    <string name="loginTitle">白泽书房</string>
+    <string name="queryBookTitle">书籍查询</string>
+    <string name="loginBotton">登录</string>
+    <string name="register">注册</string>
+    <string name="queryButton">搜索</string>
+    <string name="passwordError">密码错误</string>
+    <string name="passwordConfirmError">确认密码不一致</string>
+    <string name="usernameHint">请输入用户名</string>
+    <string name="passwordHint">请输入密码</string>
+    <string name="usernameHintRegister">请设置用户名</string>
+    <string name="passwordHintRegister">请设置密码</string>
+    <string name="passwordHintConfirm">请再次确认密码</string>
+    <string name="searchHint">请输入书名/作者/书籍编号</string>
+    <string name="controlBook">管理书籍</string>
+    <string name="insertBook">新增书籍</string>
+    <string name="queryBook">查询书籍</string>
+    <string name="queryStudent">查询学生</string>
+    <string name="myBook">我的书籍</string>
+    <string name="chatRoom">聊天水缸</string>
+</resources>

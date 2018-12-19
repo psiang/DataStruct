@@ -35,9 +35,9 @@ public class LoginActivity extends AppCompatActivity {
         //密码正确跳转至聊天页面
         if (password.matches("admin")) {
             Intent intent = new Intent(this, AdminActivity.class);
-            /*Bundle bundle = new Bundle();
+            Bundle bundle = new Bundle();
             bundle.putString("username",username);          //传递用户名
-            intent.putExtras(bundle);*/
+            intent.putExtras(bundle);
             startActivity(intent);
         }
         else {

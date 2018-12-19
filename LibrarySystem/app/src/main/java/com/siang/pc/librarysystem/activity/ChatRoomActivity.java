@@ -97,7 +97,7 @@ public class ChatRoomActivity extends AppCompatActivity {
     //通过findViewById将变量指向对应布局
     private void findViews() {
         etMessage = (EditText) findViewById(R.id.etMessage);
-        msgRecyclerView = (RecyclerView) findViewById(R.id.messageRecylerView);
+        msgRecyclerView = (RecyclerView) findViewById(R.id.messageRecycleView);
     }
 
     //获取用户名

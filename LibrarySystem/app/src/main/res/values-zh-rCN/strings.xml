@@ -18,7 +18,7 @@
     <string name="usernameHintRegister">请设置用户名</string>
     <string name="passwordHintRegister">请设置密码</string>
     <string name="passwordHintConfirm">请再次确认密码</string>
-    <string name="searchHint">请输入书名/作者/书籍编号</string>
+    <string name="searchHint">请输入书名/作者/编号</string>
     <string name="controlBook">管理书籍</string>
     <string name="insertBook">新增书籍</string>
     <string name="queryBook">查询书籍</string>

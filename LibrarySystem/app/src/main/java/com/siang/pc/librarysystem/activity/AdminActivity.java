@@ -54,10 +54,18 @@ public class AdminActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //单击我聊天水缸
+    //单击聊天水缸
     public void onChatRoom(View view) {
         Intent intent = new Intent(this, ChatRoomActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("username",getUsername());          //传递用户名
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
+    //获取用户名
+    private String getUsername() {
+        Bundle bundle = getIntent().getExtras();
+        return bundle.getString("username","");
+    }
 }

@@ -70,23 +70,22 @@
                     card_view:layout_constraintTop_toBottomOf="@+id/book_id" />
 
                 <TextView
-                    android:id="@+id/book_have"
+                    android:id="@+id/book_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:typeface="serif"
-                    card_view:layout_constraintBottom_toBottomOf="@+id/label_have"
-                    card_view:layout_constraintStart_toEndOf="@+id/label_have" />
+                    card_view:layout_constraintBottom_toBottomOf="@+id/label_start"
+                    card_view:layout_constraintStart_toEndOf="@+id/label_start" />
 
                 <TextView
-                    android:id="@+id/book_borrow"
+                    android:id="@+id/book_end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:typeface="serif"
-                    card_view:layout_constraintBottom_toBottomOf="@id/label_borrow"
-                    card_view:layout_constraintStart_toEndOf="@+id/label_borrow"
-                    tools:layout_editor_absoluteY="54dp" />
+                    card_view:layout_constraintBottom_toBottomOf="@+id/label_end"
+                    card_view:layout_constraintStart_toEndOf="@+id/label_end" />
 
                 <TextView
                     android:id="@+id/label_id"
@@ -111,27 +110,27 @@
                     card_view:layout_constraintTop_toBottomOf="@+id/label_id" />
 
                 <TextView
-                    android:id="@+id/label_have"
+                    android:id="@+id/label_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"
-                    android:text="@string/bookHave"
+                    android:text="@string/bookStart"
                     android:typeface="serif"
                     card_view:layout_constraintBottom_toBottomOf="parent"
                     card_view:layout_constraintStart_toStartOf="parent"
                     card_view:layout_constraintTop_toBottomOf="@+id/label_author" />
 
                 <TextView
-                    android:id="@+id/label_borrow"
+                    android:id="@+id/label_end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="@string/bookBorrow"
+                    android:layout_marginStart="28dp"
+                    android:text="@string/bookEnd"
                     android:typeface="serif"
-                    card_view:layout_constraintBottom_toBottomOf="@id/book_have"
-                    card_view:layout_constraintStart_toEndOf="@+id/book_have" />
+                    card_view:layout_constraintBottom_toBottomOf="@+id/book_start"
+                    card_view:layout_constraintStart_toEndOf="@+id/book_start" />
 
                 <TextView
                     android:id="@+id/bt_borrow"

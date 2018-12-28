@@ -27,22 +27,18 @@ typedef struct {
     TupNode data[MaxN];
 } Matrix;
 
-void dispMatrix(Matrix);
-void initMatrix(Matrix &);
-Matrix tansposition(Matrix);
-void findStart(int*, Matrix);
-Matrix addition(Matrix, Matrix);
-Matrix multiply(Matrix, Matrix);
+void dispMatrix(Matrix);                //输出稀疏矩阵
+void initMatrix(Matrix &);              //读入稀疏矩阵
+Matrix tansposition(Matrix);            //反转稀疏矩阵
+void findStart(int*, Matrix);           //找到该矩阵每一行的开头是第几个元素
+Matrix addition(Matrix, Matrix);        //稀疏矩阵相加
+Matrix multiply(Matrix, Matrix);        //稀疏矩阵相乘
 
 int main() {
     Matrix a;
     Matrix b;
     Matrix c;
-    /*printf("Matrix A\n");
-    initMatrix(a);
-    printf("Matrix B\n");
-    initMatrix(b);*/
-    a.rows=4, a.cols=4,a.nums=6;
+    /*a.rows=4, a.cols=4,a.nums=6;
     copy_int(a,0,0,0,1);
     copy_int(a,1,0,2,3);
     copy_int(a,2,1,1,1);
@@ -53,7 +49,11 @@ int main() {
     copy_int(b,0,0,0,3);
     copy_int(b,1,1,1,4);
     copy_int(b,2,2,2,1);
-    copy_int(b,3,3,3,2);
+    copy_int(b,3,3,3,2);*/
+    puts("Matrix A");
+    initMatrix(a);
+    puts("Matrix B");
+    initMatrix(b);
     printf("It's the transposition of Matrix A\n");
     dispMatrix(tansposition(a));
     printf("It's the addition of Matrix A\n");
@@ -149,8 +149,8 @@ void dispMatrix(Matrix s) {
 
 void initMatrix(Matrix &s) {
     printf("Please input the nums,rows,cols in Matrix:\n");
-    scanf("%d,%d,%d", &s.nums, &s.rows, &s.cols);
+    scanf("%d %d %d", &s.nums, &s.rows, &s.cols);
     printf("Please input the row,col,value of numbers:\n");
     for (int i = 0; i < s.nums; i++)
-        scanf("%d,%d,%d", &r(s, i), &c(s, i), &d(s, i));
+        scanf("%d %d %d", &r(s, i), &c(s, i), &d(s, i));
 }

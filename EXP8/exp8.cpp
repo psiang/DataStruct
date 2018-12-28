@@ -18,9 +18,9 @@ int top = 0, stack[MaxN * MaxN], ans = 0;
 int m, n, visited[MaxN] = {0};
 ArcNode* head[MaxN * MaxN];
 
-void init();
-void dfs(int);
-void add(int, int);
+void init();            //读入图
+void dfs(int);          //深搜迷宫解
+void add(int, int);     //将两点之间添加一条边
 
 int main() {
     init();

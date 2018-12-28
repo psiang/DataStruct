@@ -9,16 +9,16 @@ import android.widget.TextView;
 import com.siang.pc.librarysystem.R;
 
 
-public class AdminActivity extends AppCompatActivity {
+public class NormalActivity extends AppCompatActivity {
     TextView tvGreet;
 
-    public AdminActivity() {
+    public NormalActivity() {
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin);
+        setContentView(R.layout.activity_normal);
         findViews();
     }
 
@@ -28,33 +28,9 @@ public class AdminActivity extends AppCompatActivity {
         tvGreet.setText(getUsername());
     }
 
-    //单击管理书籍
-    public void onControlBook(View view) {
-        Intent intent = new Intent(this, ManagerBookActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("username",getUsername());          //传递用户名
-        intent.putExtras(bundle);
-        startActivity(intent);
-    }
-
-    //单击新增书籍
-    public void onInsertBook(View view) {
-        Intent intent = new Intent(this, AddBookActivity.class);
-        startActivity(intent);
-    }
-
     //单击查询书籍
     public void onQueryBook(View view) {
         Intent intent = new Intent(this, SearchBookActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("username",getUsername());          //传递用户名
-        intent.putExtras(bundle);
-        startActivity(intent);
-    }
-
-    //单击查询学生
-    public void onQueryStudent(View view) {
-        Intent intent = new Intent(this, SearchStudentActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("username",getUsername());          //传递用户名
         intent.putExtras(bundle);

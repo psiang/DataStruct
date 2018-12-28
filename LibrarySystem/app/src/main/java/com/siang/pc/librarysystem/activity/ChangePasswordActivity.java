@@ -1,6 +1,5 @@
 package com.siang.pc.librarysystem.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,22 +16,18 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 
-public class LoginActivity extends AppCompatActivity {
-    private EditText etUsername, etPassword;
+public class ChangePasswordActivity extends AppCompatActivity {
+    private EditText etUsername, etPassword, etChangePassword;
     Socket socket;
-    Intent intentVIP;
-    Intent intent;
 
-    public LoginActivity() {
+    public ChangePasswordActivity() {
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_change_password);
         findViews();
-        intentVIP = new Intent(this, AdminActivity.class);
-        intent = new Intent(this, NormalActivity.class);
         listenSeverMessage();
     }
 
@@ -40,19 +35,21 @@ public class LoginActivity extends AppCompatActivity {
     private void findViews() {
         etUsername = (EditText) findViewById(R.id.etUsername);
         etPassword = (EditText) findViewById(R.id.etPassword);
+        etChangePassword = (EditText) findViewById(R.id.etChangePassword);
     }
 
-    //单击登录
-    public void onLogin(View view) {
+    //单击注册
+    public void onConfirm(View view) {
         final String username = etUsername.getText().toString();
         final String password = etPassword.getText().toString();
+        final String change_password = etChangePassword.getText().toString();
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     //向服务器端用输出流输出消息
                     OutputStream outputStream = socket.getOutputStream();
-                    outputStream.write(("Login_S" + "//" + socket.getLocalPort() + "//0//" + username + "//" + password + "//0").getBytes("utf-8"));
+                    outputStream.write(("Modify_S" + "//" + socket.getLocalPort() + "//0//" + username + "//" + password + "//" + change_password).getBytes("utf-8"));
                     //输出流的消息在客户端存在缓冲区等待缓冲区满，只有flush清除缓冲区强制发送出去
                     outputStream.flush();
                 } catch (IOException e) {
@@ -60,18 +57,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         }).start();
-    }
-
-    //单击注册
-    public void onRegister(View view) {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
-    }
-
-    //单击重置密码
-    public void onChangePassword(View view) {
-        Intent intent = new Intent(this, ChangePasswordActivity.class);
-        startActivity(intent);
     }
 
     //连接并监听服务器
@@ -85,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                     System.out.println("尝试连接。。");
                     socket = new Socket("140.143.209.173", 2222);
                     System.out.println("连接成功！");
+
                     InputStream inputStream = socket.getInputStream();
                     byte[] buffer = new byte[1024];
                     int len;
@@ -112,28 +98,17 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            final String username = etUsername.getText().toString();
             String data = ((String) msg.obj);
             String[] split = data.split("//");
-            if (split[0].equals("Info_Login")) {
-                //密码正确跳转至聊天页面
-                if (split[1].matches("true")) {
-                    if (username.equals("root") || username.equals("admin")) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("username",username);          //传递用户名
-                        intentVIP.putExtras(bundle);
-                        startActivity(intentVIP);
-                    }
-                    else{
-                        Bundle bundle = new Bundle();
-                        bundle.putString("username",username);          //传递用户名
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
+            System.out.println(data);
+            if (split[0].equals("Info_Modify")) {
+                if (split[1].equals("true")) {
+                    String text = getResources().getString(R.string.Info_Modify);
+                    Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+                    toast.show();
                 }
                 else {
                     etPassword.setError(getResources().getString(R.string.passwordError));
-                    return;
                 }
             }
         }

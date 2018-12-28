@@ -13,29 +13,29 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/register"
+        android:text="@string/addBookTitle"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/etUsername"
+        android:id="@+id/etName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="64dp"
         android:ems="10"
-        android:lines="1"
-        android:hint="@string/usernameHintRegister"
+        android:hint="@string/bookNameHint"
         android:inputType="none"
+        android:lines="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
-        android:id="@+id/etPassword"
+        android:id="@+id/etAuthor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/etUsername"
@@ -43,15 +43,16 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="64dp"
         android:ems="10"
+        android:hint="@string/bookAuthorHint"
+        android:inputType="none"
         android:lines="1"
-        android:hint="@string/passwordHintRegister"
-        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/etName" />
 
     <EditText
-        android:id="@+id/etConfirmPassword"
+        android:id="@+id/etNumber"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/etUsername"
@@ -59,27 +60,27 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="64dp"
         android:ems="10"
+        android:hint="@string/bookNumberHint"
+        android:inputType="number"
         android:lines="1"
-        android:hint="@string/passwordHintConfirm"
-        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/etAuthor" />
 
     <Button
-        android:id="@+id/btRegister"
+        android:id="@+id/btAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/etPassword"
         android:layout_marginStart="128dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="128dp"
-        android:onClick="onRegister"
-        android:text="@string/register"
+        android:onClick="onAdd"
+        android:text="@string/addBook"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etConfirmPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/etNumber" />
 
 </android.support.constraint.ConstraintLayout>

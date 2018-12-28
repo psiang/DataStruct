@@ -39,6 +39,30 @@
             android:name=".activity.ChatRoomActivity"
             android:label="@string/app_name">
         </activity>
+        <activity
+            android:name=".activity.SearchStudentActivity"
+            android:label="@string/app_name">
+        </activity>
+        <activity
+            android:name=".activity.MyBookActivity"
+            android:label="@string/app_name">
+        </activity>
+        <activity
+            android:name=".activity.AddBookActivity"
+            android:label="@string/app_name">
+        </activity>
+        <activity
+            android:name=".activity.ManagerBookActivity"
+            android:label="@string/app_name">
+        </activity>
+        <activity
+            android:name=".activity.NormalActivity"
+            android:label="@string/app_name">
+        </activity>
+        <activity
+            android:name=".activity.ChangePasswordActivity"
+            android:label="@string/app_name">
+        </activity>
     </application>
 
 </manifest>

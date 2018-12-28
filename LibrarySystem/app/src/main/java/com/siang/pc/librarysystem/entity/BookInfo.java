@@ -12,13 +12,23 @@ public class BookInfo {
     private String author;
     private String bookHave;
     private String bookBorrow;
+    private int type;               //0借阅 1归还 2不可操作
 
-    public BookInfo(String Id, String name, String author, String bookHave, String bookBorrow) {     // 构造函数
+    public BookInfo(String Id, String name, String author, String bookHave, String bookBorrow, int type) {     // 构造函数
         this.Id = Id;
         this.name = name;
         this.author = author;
         this.bookHave = bookHave;
         this.bookBorrow = bookBorrow;
+        this.type = type;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getId() {

@@ -16,9 +16,9 @@ typedef struct node{
     struct node *rc;
 } node;
 
-void work();
-double caculate(node*);
-node* build(int, int, char*);
+void work();                    //读取表达式并预处理和计算
+double caculate(node*);         //计算表达式树
+node* build(int, int, char*);   //构建表达式树
 
 int main() {
     work();

@@ -1,9 +1,8 @@
 package com.siang.pc.librarysystem.activity;
 
-import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,12 +10,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.siang.pc.librarysystem.R;
 import com.siang.pc.librarysystem.adapter.BookListAdapter;
-import com.siang.pc.librarysystem.adapter.MessageAdapter;
+import com.siang.pc.librarysystem.adapter.ManagerBookListAdapter;
 import com.siang.pc.librarysystem.entity.BookInfo;
 import com.siang.pc.librarysystem.entity.MyBookInfo;
 
@@ -27,11 +25,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchBookActivity extends AppCompatActivity {
+public class ManagerBookActivity extends AppCompatActivity {
     private List<BookInfo> bookList;                                   // 消息列表
     private EditText etSearch;
     private Socket socket;
-    private BookListAdapter adapter;                                      // msgRcyclerview的adapter，设置内容
+    private ManagerBookListAdapter adapter;                                      // msgRcyclerview的adapter，设置内容
     private RecyclerView msgRecyclerView;                               // recyclerview块，滚动显示消息
     private RadioGroup rgWay;
     private String check;
@@ -39,13 +37,13 @@ public class SearchBookActivity extends AppCompatActivity {
     private String way = "2";
     private String searchString = "";
 
-    public SearchBookActivity() {
+    public ManagerBookActivity() {
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_book);
+        setContentView(R.layout.activity_manage_book);
         check = getResources().getString(R.string.AuthorofBook);
         username = getUsername();
         findViews();
@@ -53,7 +51,7 @@ public class SearchBookActivity extends AppCompatActivity {
         bookList = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         msgRecyclerView.setLayoutManager(layoutManager); // 将msgRecyclerView赋予Listview样式
-        adapter = new BookListAdapter(bookList, this);
+        adapter = new ManagerBookListAdapter(bookList, this);
         msgRecyclerView.setAdapter(adapter);    // 为msgRecyclerView设置一个adapter
 
         listenSeverMessage();
@@ -166,7 +164,6 @@ public class SearchBookActivity extends AppCompatActivity {
             String data = ((String) msg.obj);
             String[] split = data.split("//");
             if (split[0].equals("Book") && split[1].equals("0")) {
-                System.out.println(data);
                 adapter.notifyItemRangeRemoved(0, bookList.size());
                 bookList.clear();
                 adapter.setWay(way);
@@ -180,7 +177,6 @@ public class SearchBookActivity extends AppCompatActivity {
                 int number_book = Integer.parseInt(split[j]);
                 j += 1;
                 for (int i = 1; i <= number_book && j + 4 < split.length; i++, j += 5) {
-                    //System.out.println(split[j + 1]);
                     int type, total, borrow;
                     total = Integer.parseInt(split[j + 3].replace("/",""));
                     borrow = Integer.parseInt(split[j + 4].replace("/",""));
@@ -210,7 +206,6 @@ public class SearchBookActivity extends AppCompatActivity {
                 int number_book = Integer.parseInt(split[j]);
                 j += 1;
                 for (int i = 1; i <= number_book && j + 4 < split.length; i++, j += 5) {
-                    //System.out.println(split[j + 1]);
                     int type, total, borrow;
                     total = Integer.parseInt(split[j + 3].replace("/",""));
                     borrow = Integer.parseInt(split[j + 4].replace("/",""));
@@ -229,8 +224,8 @@ public class SearchBookActivity extends AppCompatActivity {
                 // 当有新消息时，更新列表最后的位置上的数据可以调用
                 adapter.notifyItemInserted(bookList.size() - 1);
             }
-            else if(split[0].equals("Info_Borrow")) {
-                String text = getResources().getString(R.string.Info_Borrow);
+            else if(split[0].equals("Info_Insert") && split[1].equals("0")) {
+                String text = getResources().getString(R.string.Info_Insert0);
                 Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
                 toast.show();
                 String bookName = split[2];
@@ -240,33 +235,9 @@ public class SearchBookActivity extends AppCompatActivity {
                         pos = i;
                         break;
                     }
-                int borrow_num = Integer.parseInt(bookList.get(pos).getBookBorrow()) + 1;
-                bookList.get(pos).setBookBorrow(String.valueOf(borrow_num));
-                bookList.get(pos).setType(1);                   //0为借阅，1为归还
+                int have_num = Integer.parseInt(bookList.get(pos).getBookHave()) + Integer.parseInt(split[3]);
+                bookList.get(pos).setBookHave(String.valueOf(have_num));
                 adapter.notifyItemChanged(pos);
-            }
-            else if(split[0].equals("Info_Return")) {
-                String text = getResources().getString(R.string.Info_Return);
-                Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
-                toast.show();
-                String bookName = split[2];
-                int pos = -1;
-                for(int i = 0; i < bookList.size(); i++)
-                    if (bookList.get(i).getName().equals(bookName)) {
-                        pos = i;
-                        break;
-                    }
-                int borrow_num = Integer.parseInt(bookList.get(pos).getBookBorrow()) - 1;
-                bookList.get(pos).setBookBorrow(String.valueOf(borrow_num));
-                bookList.get(pos).setType(0);                   //0为借阅，1为归还
-                adapter.notifyItemChanged(pos);
-            }
-            else if (split[0].equals("Error_Query")) {
-                adapter.notifyItemRangeRemoved(0, bookList.size());
-                bookList.clear();
-                String text = getResources().getString(R.string.Error_Query);
-                Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
-                toast.show();
             }
             else if (split[0].equals("Error_Query")) {
                 adapter.notifyItemRangeRemoved(0, bookList.size());
@@ -280,16 +251,44 @@ public class SearchBookActivity extends AppCompatActivity {
                 Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
                 toast.show();
             }
-            else if (split[0].equals("Error_Borrow")) {
-                String text;
-                if (split[1].equals("0")) {
-                    text = getResources().getString(R.string.Error_Borrow0);
-                }
-                else {
-                    text = getResources().getString(R.string.Error_Borrow1);
-                }
+            else if(split[0].equals("Info_Insert") && split[1].equals("1")) {
+                String text = getResources().getString(R.string.Info_Insert1);
                 Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
                 toast.show();
+                String bookName = split[2];
+                int pos = -1;
+                for(int i = 0; i < bookList.size(); i++)
+                    if (bookList.get(i).getName().equals(bookName)) {
+                        pos = i;
+                        break;
+                    }
+                int have_num = Integer.parseInt(bookList.get(pos).getBookHave()) - Integer.parseInt(split[3]);
+                bookList.get(pos).setBookHave(String.valueOf(have_num));
+                adapter.notifyItemChanged(pos);
+            }
+            else if (split[0].equals("Error_Insert1")) {
+                String text = getResources().getString(R.string.Error_Insert1);
+                Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            else if (split[0].equals("Error_DeleteB")) {
+                String text = getResources().getString(R.string.Error_DeleteB);
+                Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            else if (split[0].equals("Info_DeleteB")) {
+                String text = getResources().getString(R.string.Info_DeleteB);
+                Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+                toast.show();
+                String bookName = split[2];
+                int pos = -1;
+                for(int i = 0; i < bookList.size(); i++)
+                    if (bookList.get(i).getName().equals(bookName)) {
+                        pos = i;
+                        break;
+                    }
+                bookList.remove(pos);
+                adapter.notifyItemRemoved(pos);
             }
         }
     }

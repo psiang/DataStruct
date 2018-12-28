@@ -10,49 +10,53 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.siang.pc.librarysystem.R;
+import com.siang.pc.librarysystem.entity.BookInfo;
+import com.siang.pc.librarysystem.entity.MyBookInfo;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class LoginActivity extends AppCompatActivity {
-    private EditText etUsername, etPassword;
-    Socket socket;
-    Intent intentVIP;
-    Intent intent;
+public class AddBookActivity extends AppCompatActivity {
+    private EditText etName, etAuthor, etNumber;
+    private Socket socket;
 
-    public LoginActivity() {
+    public AddBookActivity() {
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_add_book);
         findViews();
-        intentVIP = new Intent(this, AdminActivity.class);
-        intent = new Intent(this, NormalActivity.class);
+
         listenSeverMessage();
     }
 
     //通过findViewById将变量指向对应布局
     private void findViews() {
-        etUsername = (EditText) findViewById(R.id.etUsername);
-        etPassword = (EditText) findViewById(R.id.etPassword);
+        etName = (EditText) findViewById(R.id.etName);
+        etAuthor = (EditText) findViewById(R.id.etAuthor);
+        etNumber = (EditText) findViewById(R.id.etNumber);
     }
 
-    //单击登录
-    public void onLogin(View view) {
-        final String username = etUsername.getText().toString();
-        final String password = etPassword.getText().toString();
+    //单击添加
+    public void onAdd(View view) {
+        final String name = etName.getText().toString();
+        final String author = etAuthor.getText().toString();
+        final String number = etNumber.getText().toString();
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     //向服务器端用输出流输出消息
                     OutputStream outputStream = socket.getOutputStream();
-                    outputStream.write(("Login_S" + "//" + socket.getLocalPort() + "//0//" + username + "//" + password + "//0").getBytes("utf-8"));
+                    outputStream.write(("Insert_B" + "//" + socket.getLocalPort() + "//2//" + name + "//" + author + "//" + number + "//0").getBytes("utf-8"));
                     //输出流的消息在客户端存在缓冲区等待缓冲区满，只有flush清除缓冲区强制发送出去
                     outputStream.flush();
                 } catch (IOException e) {
@@ -60,18 +64,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         }).start();
-    }
-
-    //单击注册
-    public void onRegister(View view) {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
-    }
-
-    //单击重置密码
-    public void onChangePassword(View view) {
-        Intent intent = new Intent(this, ChangePasswordActivity.class);
-        startActivity(intent);
     }
 
     //连接并监听服务器
@@ -104,6 +96,22 @@ public class LoginActivity extends AppCompatActivity {
         }).start();
     }
 
+
+    protected  void onStart() {
+        super.onStart();
+    }
+
+    protected void onDestroy() {
+        super.onDestroy();
+        if (socket != null) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     /**
      * 构建handler子类，将数据传递给主线程UI使用
      * Messege类中，what为自定义类型，obj为传递的数据对象
@@ -112,29 +120,15 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            final String username = etUsername.getText().toString();
             String data = ((String) msg.obj);
             String[] split = data.split("//");
-            if (split[0].equals("Info_Login")) {
-                //密码正确跳转至聊天页面
-                if (split[1].matches("true")) {
-                    if (username.equals("root") || username.equals("admin")) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("username",username);          //传递用户名
-                        intentVIP.putExtras(bundle);
-                        startActivity(intentVIP);
-                    }
-                    else{
-                        Bundle bundle = new Bundle();
-                        bundle.putString("username",username);          //传递用户名
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
-                }
-                else {
-                    etPassword.setError(getResources().getString(R.string.passwordError));
-                    return;
-                }
+            if (split[0].equals("Info_Insert") && split[1].equals("2")) {
+                String text = getResources().getString(R.string.Info_Insert2);
+                Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            else if (split[0].equals("Error_Insert")) {
+                etName.setError(getResources().getString(R.string.booknameError));
             }
         }
     }
